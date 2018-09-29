@@ -1,3 +1,4 @@
+# Source : https://youtu.be/XWkLyn0Fct4?t=1h4m15s
 # Ce programme dit bonjour et demande le prénom de l'utilisateur
 
 print('Bonjour le monde !')
