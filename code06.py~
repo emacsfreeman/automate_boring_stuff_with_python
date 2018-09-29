@@ -1,0 +1,14 @@
+# Importation de module
+
+import sys
+print('Bonjour')
+sys.exit()
+print('Au revoir')
+
+# pip install pyperclip
+
+
+# Ressources complémentaires
+# Documentation officielle :
+# https://docs.python.org/3/library/sys.html?highlight=sys#module-sys
+

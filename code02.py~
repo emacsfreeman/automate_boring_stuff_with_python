@@ -1,0 +1,4 @@
+prenom = input('Quel est ton prénom ?\n')
+if len(prenom) > 7:
+    print('Ton prénom comporte plus de 7 lettres.')
+print('Fait')
