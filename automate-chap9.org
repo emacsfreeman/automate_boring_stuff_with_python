@@ -1,0 +1,113 @@
+#+TITLE: Automate the boring stuff chapitre 9 : organizing files
+#+AUTHOR: Laurent Garnier
+
+* The shutil Module
+** Copying Files and Folders
+   Premier bout de code
+   #+BEGIN_SRC python
+     import shutil, os
+     os.chdir(os.getcwd() + '/Test')
+     shutil.copy('test.txt', 'vrac')
+     shutil.copy('truc1.txt', 'truc2.txt')
+   #+END_SRC
+   Deuxième bout de code
+   #+BEGIN_SRC python
+     import shutil, os
+     os.chdir(os.getcwd() + '/Test')
+     shutil.copytree('vrac', 'vrac_backup')
+   #+END_SRC
+** Moving and Renaming Files and Folders
+   Premier bout de code
+   #+BEGIN_SRC python
+     import shutil, os
+     os.chdir(os.getcwd() + '/Test')
+     shutil.move('truc1.txt', 'vrac')
+   #+END_SRC
+   Deuxième bout de code
+   #+BEGIN_SRC python
+     import shutil, os
+     os.chdir(os.getcwd() + '/Test')
+     shutil.move('truc2.txt', 'vrac/truc2_copie.txt')
+   #+END_SRC
+   Troisième bout de code
+   #+BEGIN_SRC python
+     import shutil, os
+     os.chdir(os.getcwd() + '/Test')
+     shutil.move('test.txt', 'test2') # si le rép test2 n'existe pas alors test2
+				      # sera un nouveau fichier mais sans extension
+   #+END_SRC
+** Permanently Deleting Files and Folders
+   #+BEGIN_SRC python
+     import os
+     for filename in os.listdir():
+	 if filename.endswith('.rxt'):
+	     # os.unlink(filename)
+	     print(filename)
+   #+END_SRC
+
+** Safe Deletes with the send2trash Module
+   Premier bout de code
+   #+BEGIN_SRC python
+     import send2trash, os
+     os.chdir(getcwd() + '/Test')
+     testFile = open('new_test.txt', 'a') # create the file
+     testFile.write('Ceci est un nouveau test.')
+     testFile.close()
+     send2trash.send2trash('new_test.txt')
+   #+END_SRC
+* Walking a Directory Tree
+   Premier bout de code
+   #+BEGIN_SRC python
+     import os
+
+     for folderName, subfolders, filenames in os.walk(os.getcwd()):
+	 print('The current folder is ' + folderName)
+
+	 for subfolder in subfolders:
+	     print('SUBFOLDER OF ' + folderName + ': ' + subfolder)
+
+	 for filename in filenames:
+	     print('FILE INSIDE ' + folderName + '= ' + filename)
+
+	 print('')
+   #+END_SRC
+   
+* Compressing Files with the zipfile Module
+** Reading ZIP Files   
+   Premier bout de code
+   #+BEGIN_SRC python
+     import zipfile, os
+     os.chdir(os.getcwd() + '/Test') # move to the folder with example.zip
+     exampleZip = zipfile.ZipFile('example.zip')
+     exampleZip.namelist()
+     testInfo = exampleZip.getinfo('test.txt')
+     testInfo.file_size
+     testInfo.compress_size
+     'Compressed file is %sx smaller!' % (round(testInfo.file_size / testInfo.compress_size, 2))
+     exampleZip.close()
+   #+END_SRC
+** Extracting from ZIP files
+   Premier bout de code
+   #+BEGIN_SRC python
+     import zipfile, os
+     os.chdir(os.getcwd()) # move to the folder with example.zip
+     exampleZip = zipfile.Zipfile('example.zip')
+     exampleZip.extractall()
+     exampleZip.close()
+   #+END_SRC
+   Deuxième bout de code
+   #+BEGIN_SRC python
+     exampleZip.extract('test.txt')
+     exampleZip.extract('test.txt', os.getcwd() + '/some_folder')
+     exampleZip.close()
+   #+END_SRC
+** Creating and Adding to ZIP Files
+   Premier bout de code
+   #+BEGIN_SRC python
+     import zipfile
+     newZip = zipfile.ZipFile('new.zip', 'w')
+     newZip.write('test.txt', compress_type=zipfile.ZIP_DEFLATED)
+     newZip.close()
+   #+END_SRC
+* Project: Renaming Files with American-Style Dates to European-Style Dates
+  
