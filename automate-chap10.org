@@ -1,0 +1,112 @@
+#+TITLE: Automate the boring stuff chapitre 10 : debugging
+#+AUTHOR: Laurent Garnier
+
+* Raising exceptions
+
+  #+BEGIN_SRC python
+    raise Exception('Voici le message d\'erreur.')
+  #+END_SRC
+* Getting the traceback as a string
+  #+BEGIN_SRC python
+    import traceback
+    try:
+	raise Exception('Ceci est un message d\'erreur.')
+    except:
+	errorFile = open('errorInfo.txt', 'w')
+	errorFile.write(traceback.format_exc())
+	errorFile.close()
+	print('The traceback info was written to errorInfo.txt.')
+  #+END_SRC
+* Assertions
+  #+BEGIN_SRC python
+    podBayDoorStatus = 'open'
+    assert podBayDoorStatus == 'open', 'The pod bay doors need to be "open".'
+    podBayDoorStatus = 'I\'m sorry, Dave. I\'m afraid I can\'t do that.'
+    assert podBayDoorStatus == 'open', 'The pod bay doors need to be "open".'
+  #+END_SRC
+* Using an assertion in a traffic light simulation
+  Version 1
+  #+BEGIN_SRC python
+    def switchLights(stoplight):
+	for key in stoplight.keys():
+	    if stoplight[key] == 'green':
+		stoplight[key] = 'yellow'
+	    elif stoplight[key] == 'yellow':
+		stoplight[key] = 'red'
+	    elif stoplight[key] == 'red':
+		stoplight[key] = 'green'
+
+    switchLights(market_2nd)
+  #+END_SRC
+  Version 2
+  #+BEGIN_SRC python
+    def switchLights(stoplight):
+	for key in stoplight.keys():
+	    if stoplight[key] == 'green':
+		stoplight[key] = 'yellow'
+	    elif stoplight[key] == 'yellow':
+		stoplight[key] = 'red'
+	    elif stoplight[key] == 'red':
+		stoplight[key] = 'green'
+
+    assert 'red' in stoplight.values(), 'Neither light is red! ' + str(stoplight)            
+
+    switchLights(market_2nd)
+  #+END_SRC
+  
+* Disabling assertions
+  Juste passer l'option =-o= lors du lancement de Python
+* Utilisation du module =logging=
+  #+BEGIN_SRC python
+    import logging
+    logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s - %(message)s')
+  #+END_SRC
+* Don't debug with =print()=  
+  Pour désactiver les messages du journal de bord il suffit un appel à
+  la méthode =logging.disable(logging.CRITICAL)=
+* Logging levels
+  
+  | Niveau   | Fonction             | Description              |
+  |----------+----------------------+--------------------------|
+  | DEBUG    | =logging.debug()=    | Plus bas niveau.         |
+  |          |                      | Diagnostic des problèmes |
+  |          |                      |                          |
+  | INFO     | =logging.info()=     | Pour enregistrer l'info  |
+  |          |                      | sur les événements       |
+  |          |                      | généraux                 |
+  |          |                      |                          |
+  | WARNING  | =logging.warning()=  | Pour indiquer un prob    |
+  |          |                      | potentiel                |
+  |          |                      |                          |
+  | ERROR    | =logging.error()=    | Pour enregistrer une     |
+  |          |                      | erreur qui fait planter  |
+  |          |                      |                          |
+  | CRITICAL | =logging.critical()= | Le plus haut niveau      |
+  |          |                      | Pour indiquer une erreur |
+  |          |                      | fatale                   |
+
+  #+BEGIN_SRC python
+    import logging
+    logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s - %(message)s')
+    logging.debug('Some debugging details.')
+    logging.info('The logging module is working.')
+    logging.warning('An error message is about to be logged.')
+    logging.error('An error has occurred.')
+    logging.critical('The program is unable to recover!')
+  #+END_SRC
+
+* Disabling logging
+  #+BEGIN_SRC python
+    import logging
+    logging.basicConfig(level=logging.INFO, format=' %(asctime)s - %(levelname)s - %(message)s')
+    loggging.critical('Critical error! Critical error!')
+    logging.disable(logging.CRITICAL)
+    loggging.critical('Critical error! Critical error!')
+    logging.error('Error! Error!')
+  #+END_SRC
+
+* Logging to a file
+  #+BEGIN_SRC python
+    import logging
+    logging.basicConfig(filename='myProgramLog.txt', level=logging.DEBUG, format=' %(asctime)s - %(levelname)s - %(message)s')
+  #+END_SRC
