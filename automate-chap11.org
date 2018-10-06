@@ -1,0 +1,8 @@
+#+TITLE: Automate The Boring Stuff With Python: Chapter 11 Web Scraping
+#+AUTHOR: Laurent Garnier
+
+* Web Scraping
+  #+BEGIN_SRC python
+    import webbrowser
+    webbrowser.open('http://inventwithpython.com/')
+  #+END_SRC
